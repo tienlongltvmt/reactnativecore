@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "509056130699",
+    "project_id": "spa-management-86164",
+    "storage_bucket": "spa-management-86164.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509056130699:android:26de904be09b714c7b3e8e",
+        "android_client_info": {
+          "package_name": "com.reactnativecore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "509056130699-dns7917tiuh1tdl6vr0rv56u1c1pubs6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL5y9x5HPhHevH3vY_mTm8g-_eGRAIoA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "509056130699-dns7917tiuh1tdl6vr0rv56u1c1pubs6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
