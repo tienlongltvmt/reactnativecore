@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "url": "https://rntp.dev/example/Longing.mp3",
+    "title": "Longing",
+    "artist": "David Chavez",
+    "thumbnail": "https://rntp.dev/example/Longing.jpeg",
+    "duration": 143
+  },
+  {
+    "id": 2,
+    "url": "https://rntp.dev/example/Soul%20Searching.mp3",
+    "title": "Soul Searching (Demo)",
+    "artist": "David Chavez",
+    "thumbnail": "https://rntp.dev/example/Soul%20Searching.jpeg",
+    "duration": 77
+  },
+  {
+    "id": 3,
+    "url": "https://rntp.dev/example/Lullaby%20(Demo).mp3",
+    "title": "Lullaby (Demo)",
+    "artist": "David Chavez",
+    "thumbnail": "https://rntp.dev/example/Lullaby%20(Demo).jpeg",
+    "duration": 71
+  },
+  {
+    "id": 4,
+    "url": "https://rntp.dev/example/Rhythm%20City%20(Demo).mp3",
+    "title": "Rhythm City (Demo)",
+    "artist": "David Chavez",
+    "thumbnail": "https://rntp.dev/example/Rhythm%20City%20(Demo).jpeg",
+    "duration": 106
+  },
+  {
+    "id": 5,
+    "url": "https://rntp.dev/example/hls/whip/playlist.m3u8",
+    "title": "Whip",
+    "artist": "prazkhanal",
+    "thumbnail": "https://rntp.dev/example/hls/whip/whip.jpeg",
+    "duration": 103
+  },
+  {
+    "id": 6,
+    "url": "https://ais-sa5.cdnstream1.com/b75154_128mp3",
+    "title": "Smooth Jazz 24/7",
+    "artist": "New York, NY",
+    "thumbnail": "https://rntp.dev/example/smooth-jazz-24-7.jpeg",
+    "duration": 103
+  }
+]

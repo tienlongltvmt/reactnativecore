@@ -1,64 +1,63 @@
-import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {MyIcon, MyText} from 'src/share/components';
 import tw from 'lib/tailwind';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {IMusic} from 'src/interface/Music.interface';
 import ItemMusic from './components/ItemMusic';
-let data: IMusic[] = [
-  {
-    id: 1,
-    url: 'https://rntp.dev/example/Longing.mp3',
-    title: 'Longing',
-    artist: 'David Chavez',
-    thumbnail: 'https://rntp.dev/example/Longing.jpeg',
-    duration: 143,
-  },
-  {
-    id: 2,
-    url: 'https://rntp.dev/example/Soul%20Searching.mp3',
-    title: 'Soul Searching (Demo)',
-    artist: 'David Chavez',
-    thumbnail: 'https://rntp.dev/example/Soul%20Searching.jpeg',
-    duration: 77,
-  },
-  {
-    id: 3,
-    url: 'https://rntp.dev/example/Lullaby%20(Demo).mp3',
-    title: 'Lullaby (Demo)',
-    artist: 'David Chavez',
-    thumbnail: 'https://rntp.dev/example/Lullaby%20(Demo).jpeg',
-    duration: 71,
-  },
-  {
-    id: 4,
-    url: 'https://rntp.dev/example/Rhythm%20City%20(Demo).mp3',
-    title: 'Rhythm City (Demo)',
-    artist: 'David Chavez',
-    thumbnail: 'https://rntp.dev/example/Rhythm%20City%20(Demo).jpeg',
-    duration: 106,
-  },
-  {
-    id: 5,
-    url: 'https://rntp.dev/example/hls/whip/playlist.m3u8',
-    title: 'Whip',
-    artist: 'prazkhanal',
-    thumbnail: 'https://rntp.dev/example/hls/whip/whip.jpeg',
-    duration: 103,
-  },
-  {
-    id: 6,
-    url: 'https://ais-sa5.cdnstream1.com/b75154_128mp3',
-    title: 'Smooth Jazz 24/7',
-    artist: 'New York, NY',
-    thumbnail: 'https://rntp.dev/example/smooth-jazz-24-7.jpeg',
-    duration: 103,
-  },
-];
+import TrackPlayer, {
+  Event,
+  State,
+  useActiveTrack,
+  useTrackPlayerEvents,
+} from 'react-native-track-player';
+import {addTrack, setupPlayer} from './service/SetupService';
+import {QueueInitialTracksService} from './service/QueueInitialTracksService';
+const events = [Event.PlaybackState, Event.PlaybackError];
 
 export default function Music() {
-  const renderItem = ({item}: {item: IMusic}) => {
-    return <ItemMusic item={item} />;
+  const [queue, setQueue] = useState<IMusic[]>([]);
+  const [currentTrack, setCurrentTrack] = useState(0);
+  const [playerState, setPlayerState] = useState(null);
+  const [play, setPlay] = useState(false);
+  useEffect(() => {
+    async function setup() {
+      let isSetup = await setupPlayer();
+      await addTrack();
+      setPlay(isSetup);
+    }
+    setup();
+  }, []);
+
+  async function loadPlaylist() {
+    const queue = await TrackPlayer.getQueue();
+    setQueue(queue);
+  }
+
+  useEffect(() => {
+    if (play) {
+      loadPlaylist();
+    }
+  }, [play]);
+
+  useTrackPlayerEvents(events, event => {
+    if (event.type === Event.PlaybackError) {
+      console.warn('An error occured while playing the current track.');
+    }
+    if (event.type === Event.PlaybackState) {
+      setPlayerState(event.state);
+    }
+  });
+
+  const renderItem = ({item, index}: {item: IMusic; index: number}) => {
+    return <ItemMusic item={item} index={index} />;
   };
   const renderKeyExtractor = (item: IMusic) => {
     return item.id.toString();
@@ -66,6 +65,7 @@ export default function Music() {
   const renderItemSeparator = () => {
     return <View style={tw.style('h-px my-2')} />;
   };
+
   return (
     <SafeAreaView style={tw.style('flex-1 bg-black px-4')}>
       <MyText style={tw.style('text-white text-2xl')}>Songs</MyText>
@@ -99,6 +99,7 @@ export default function Music() {
           <MyText style={tw.style('text-[#F1C376] ml-2')}>Play</MyText>
         </TouchableOpacity>
         <TouchableOpacity
+          // onPress={handleShuffle}
           style={tw.style(
             'flex-row items-center bg-slate-700 flex-1 justify-center rounded-md py-2 ml-4',
           )}>
@@ -113,7 +114,7 @@ export default function Music() {
       </View>
       <FlatList
         contentContainerStyle={tw.style('mt-2')}
-        data={data}
+        data={queue}
         renderItem={renderItem}
         keyExtractor={renderKeyExtractor}
         ItemSeparatorComponent={renderItemSeparator}

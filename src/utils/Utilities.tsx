@@ -1,6 +1,5 @@
 import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import MyStaticLocal from './StaticLocal';
-import Geolocation from 'react-native-geolocation-service';
 import {Platform} from 'react-native';
 
 export default class Utilities {
@@ -24,17 +23,6 @@ export default class Utilities {
           case RESULTS.LIMITED:
             return true;
           case RESULTS.GRANTED:
-            Geolocation.getCurrentPosition(
-              position => {
-                MyStaticLocal.MY_LOCATION = position;
-              },
-              error => {
-                console.log(error);
-              },
-              {
-                enableHighAccuracy: true,
-              },
-            );
             return false;
           case RESULTS.BLOCKED:
             return true;
@@ -47,17 +35,6 @@ export default class Utilities {
         );
         switch (checkPermissionInAndroid) {
           case RESULTS.GRANTED:
-            Geolocation.getCurrentPosition(
-              position => {
-                MyStaticLocal.MY_LOCATION = position;
-              },
-              error => {
-                console.log(error);
-              },
-              {
-                enableHighAccuracy: true,
-              },
-            );
             return false;
           case RESULTS.DENIED:
             return true;

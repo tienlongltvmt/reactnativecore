@@ -10,6 +10,9 @@ import RouterBottom from './RouterBottom';
 import DownloadSocial from 'src/view/DowLoadSocial/DownloadSocial';
 import GameNoInternet from 'src/view/Game/GameNoInternet';
 import Music from 'src/view/PlayMp3/Music';
+import DetailMusic from 'src/view/PlayMp3/DetailMusic';
+import DetailProduct3D from 'src/view/3D/DetailProduct3D';
+import ChatBot from 'src/view/ChatBot/ChatBot';
 
 export default function Router() {
   const RootStack = createNativeStackNavigator();
@@ -82,6 +85,27 @@ export default function Router() {
           component={Music}
           options={{
             headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="DetailMusic"
+          component={DetailMusic}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <RootStack.Screen
+          name="DetailProduct3D"
+          component={DetailProduct3D}
+          options={{
+            title: 'Chi tiết mô hình',
+          }}
+        />
+        <RootStack.Screen
+          name="ChatBot"
+          component={ChatBot}
+          options={{
+            title: 'Chúng tôi luôn hỗ trợ bạn',
           }}
         />
       </RootStack.Navigator>

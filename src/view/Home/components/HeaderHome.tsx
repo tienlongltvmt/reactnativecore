@@ -5,41 +5,35 @@ import FastImage from 'react-native-fast-image';
 import MyNavigator from 'src/router/MyNavigator';
 import {MyText, MyIcon} from 'src/share/components';
 import MyStaticLocal from 'src/utils/StaticLocal';
-import axios from 'axios';
 import {IWeather} from 'src/interface/Weather.interface';
-import {IResponse} from 'src/interface/Api.interface';
 import Utilities from 'src/utils/Utilities';
+import {useSelector} from 'react-redux';
+import {RootState} from 'src/redux';
 
 export default function HeaderHome() {
+  const location = useSelector(
+    (state: RootState) => state.LocationReducer?.location,
+  );
   const [weather, setWeather] = useState<IWeather>();
 
-  const getWeather = useCallback(async () => {
-    if (MyStaticLocal.MY_LOCATION?.coords.longitude) {
-      try {
-        const response: IResponse<IWeather> = await axios?.get(
-          'https://api.openweathermap.org/data/2.5/weather',
-          {
-            params: {
-              lat: MyStaticLocal.MY_LOCATION?.coords.latitude,
-              lon: MyStaticLocal.MY_LOCATION?.coords.longitude,
-              appid: '049d67e7d746206971fd0ddff75ab5e8',
-            },
-          },
-        );
-        if (response.status === 200) {
-          console.log('response', response.data);
-          setWeather(response.data);
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
+  const getWeather = async () => {
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${location?.coords.latitude}&lon=${location?.coords.longitude}&appid=049d67e7d746206971fd0ddff75ab5e8`,
+      );
+      const json = await response.json();
+      setWeather(json);
+    } catch (error) {
+      console.error(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    getWeather();
+    if (location && location) {
+      getWeather();
+    }
     return () => {};
-  }, [MyStaticLocal.MY_LOCATION?.coords.latitude]);
+  }, [location]);
   return (
     <View style={tw.style('bg-green pb-4')}>
       <View
@@ -61,17 +55,22 @@ export default function HeaderHome() {
           <MyText style={tw.style('font-normal text-white')}>Quản lý</MyText>
         </View>
         <View style={tw.style('flex-row items-center')}>
-          <View style={tw.style('items-center justify-center  mr-2')}>
-            <FastImage
-              style={tw.style('w-8 h-8')}
-              source={{
-                uri: `https://openweathermap.org/img/wn/${weather?.weather[0]?.icon}@2x.png`,
-              }}
-            />
-            <MyText style={tw.style('text-xs text-white')}>
-              {Utilities.formatNumber(Number(weather?.main.temp) - 273.15)}°C
-            </MyText>
-          </View>
+          {weather && (
+            <View style={tw.style('items-center justify-center  mr-2')}>
+              <View style={tw.style('items-center justify-center mr-2')}>
+                <FastImage
+                  style={tw.style('w-8 h-8')}
+                  source={{
+                    uri: `https://openweathermap.org/img/wn/${weather?.weather[0]?.icon}@2x.png`,
+                  }}
+                />
+                <MyText style={tw.style('text-xs text-white')}>
+                  {Utilities.formatNumber(Number(weather?.main?.temp) - 273.15)}
+                  °C
+                </MyText>
+              </View>
+            </View>
+          )}
           <TouchableOpacity
             activeOpacity={0.8}
             style={tw.style('mr-3')}

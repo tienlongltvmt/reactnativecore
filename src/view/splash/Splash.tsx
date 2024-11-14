@@ -9,8 +9,12 @@ import Utilities from 'src/utils/Utilities';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import MyStaticLocal from 'src/utils/StaticLocal';
+import {useDispatch} from 'react-redux';
+import {createAction} from 'src/redux/MyAcction';
 
 export default function Splash() {
+  const dispatch = useDispatch();
+
   // Set an initializing state whilst Firebase connects
   const [users, setUser] = useState();
 
@@ -51,6 +55,8 @@ export default function Splash() {
       } else if (Platform.OS === 'ios') {
         await requestIOSLocationPermission();
       }
+    } else {
+      getCurrentLocation();
     }
   }, []);
 
@@ -106,7 +112,7 @@ export default function Splash() {
     Geolocation.getCurrentPosition(
       position => {
         if (position) {
-          MyStaticLocal.MY_LOCATION = position;
+          dispatch(createAction('SET/LOCATION', {location: position}));
         }
       },
       error => {

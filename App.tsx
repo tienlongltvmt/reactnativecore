@@ -6,6 +6,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Router from './src/router/Router';
 import {RootToast, RootToastRef} from 'src/share/components/toast/RootToast';
 import MyStaticLocal from 'src/utils/StaticLocal';
+import {Provider} from 'react-redux';
+import {store} from 'src/redux';
 
 export default function App() {
   useDeviceContext(tw);
@@ -13,8 +15,10 @@ export default function App() {
   MyStaticLocal.RootToast = rootToastRef;
   return (
     <SafeAreaProvider>
-      <Router />
-      <RootToast ref={rootToastRef} />
+      <Provider store={store}>
+        <Router />
+        <RootToast ref={rootToastRef} />
+      </Provider>
     </SafeAreaProvider>
   );
 }

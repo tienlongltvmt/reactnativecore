@@ -4,18 +4,30 @@ import {IMusic} from 'src/interface/Music.interface';
 import {MyText} from 'src/share/components';
 import FastImage from 'react-native-fast-image';
 import tw from 'lib/tailwind';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from 'src/redux';
+import {createAction} from 'src/redux/MyAcction';
+import MyNavigator from 'src/router/MyNavigator';
+import TrackPlayer from 'react-native-track-player';
 interface IProps {
   item: IMusic;
+  index: number;
 }
 export default function ItemMusic(props: IProps) {
-  const {item} = props;
-  const [itemSelected, setItemSelected] = useState<IMusic>();
+  const {item, index} = props;
+  const itemSelectedMusic = useSelector(
+    (state: RootState) => state.MusicReducer.itemSelectedMusic,
+  );
+  const dispatch = useDispatch();
 
-  const handleSelectItem = () => {
-    if (item.id === itemSelected?.id) {
-      setItemSelected(undefined);
+  const handleSelectItem = async () => {
+    if (item.id === itemSelectedMusic?.id) {
+      dispatch(createAction('SET/ITEM_Music', {item: undefined}));
     } else {
-      setItemSelected(item);
+      await TrackPlayer.skip(index);
+      TrackPlayer.play();
+      dispatch(createAction('SET/ITEM_Music', {item: item}));
+      MyNavigator.navigate('DetailMusic');
     }
   };
 
@@ -25,7 +37,7 @@ export default function ItemMusic(props: IProps) {
       activeOpacity={0.8}
       style={tw.style(
         'flex-row',
-        itemSelected?.id === item.id ? 'bg-slate-800' : '',
+        itemSelectedMusic?.id === item.id ? 'bg-slate-800' : '',
       )}>
       <FastImage
         source={{uri: item.thumbnail}}
