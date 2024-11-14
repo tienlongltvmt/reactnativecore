@@ -1,9 +1,6 @@
 // import {View, Text} from 'react-native';
 // import React, {useEffect} from 'react';
 // import OpenAI from 'openai';
-// // const OPENAI_API_KEY =
-// //   //  'proj_SUrwFwI7yKnBOHcpub8trCeL';
-// //   'sk-Vv1umCqCkxXKiaqGGF0Wt8hAUJl8AXus7nb0glXcShT3BlbkFJFYcYoS9lGr89fXsASR_IAy40omSQrbXVkgmyMawpAA';
 // ('AIzaSyCkOmu8sadtZyDthpJC98Zd8uew2uv1uYE');
 // export default function ChatBot() {
 //   useEffect(() => {
